@@ -1,0 +1,77 @@
+<html>
+<body>
+
+<form action="poc2" method="get">
+	<Br/><Br/>Book id<input type="text" name="bookid" id ="bookid"/>
+	<span id = "msg"></span>
+	<Br/><Br/>Book Name<input type="text" name="bookname" id ="bookname"/>
+	<Br/><Br/>Price<input type="text" name="price" id ="price"/>
+	<Br/><Br/><button id="b2">Add a book</button><br>
+	<span id="show"> Show all books here</span>
+</form>
+
+</body>
+
+<script src="jquery-3.5.1.min.js"></script>
+<script>//our script will come here 
+
+
+
+$(document).ready(function()
+{
+console.log("no more sins");
+$("#b2").blur(() => 
+	{ 
+		let ip = {
+			bookid : $("#bookid").val()
+		}
+
+		$.ajax({
+                    type: "get",
+                    dataType: "json",
+                    url: "http://localhost:8081/viewall",
+					data: ip,
+                    success: (returnedData) => {
+							if(returnedData.bookid = ip.bookid) {
+								$("#msg").text("book id found");
+								$("#bookname").val(returnedData.bookname);
+								$("#msg").val(returnedData.price);
+					}
+                        
+                    },
+                    error: (returnedData) => {
+                        console.log('we have trouble !!');
+                    }
+                });
+	});
+
+$("#b2").click(() => 
+	{ 
+		let ip = {
+			bookid : $("#bookid").val(),
+			bookname : $("#bookname").val(),
+			price : $("#price").val()
+		}
+
+		$.ajax({
+                    type: "get",
+                    dataType: "json",
+                    url: "http://localhost:8081/addbook",
+					data: ip,
+                    success: (returnedData) => {
+							console.log("data added");
+                        
+                    },
+                    error: (returnedData) => {
+                        console.log('we have trouble, addition failed !!');
+                    }
+                });
+	});
+	
+});
+
+
+</script>
+
+
+</html>
